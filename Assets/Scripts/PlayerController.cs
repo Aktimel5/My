@@ -1,10 +1,9 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public Animator animator;
     public float gravity = 9.8f;
     public float jumpForce;
     public float speed;
@@ -37,21 +36,12 @@ public class PlayerController : MonoBehaviour
             _moveVector -= transform.right;
         }
         
-        if (_moveVector != Vector3.zero)
-        {
-            animator.SetBool("isRun", true);
-        }
-        else
-        {
-            animator.SetBool("isRun", false);
-        }
-
         
         // JUMP
         if (Input.GetKeyDown(KeyCode.Space) && _characterController.isGrounded)
         {
             _fallVelocity = -jumpForce;
-            animator.SetBool("isGrounded", false);
+            
         }
     }
 
@@ -67,7 +57,6 @@ public class PlayerController : MonoBehaviour
         if (_characterController.isGrounded)
         {
             _fallVelocity = 0;
-            animator.SetBool("isGrounded", false);
         }
     }
 }
