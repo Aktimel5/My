@@ -9,6 +9,8 @@ public class PlayerHealth : MonoBehaviour
 
  public GameObject gamepiayUT;
  public GameObject gameOverScreen;
+ public Animator animator;
+
  private float _maxValue;
 
  private void Start()
@@ -27,6 +29,13 @@ public class PlayerHealth : MonoBehaviour
         DrawHealthDar();
     }
 
+    public void AddHealth(float amount)
+    {
+        value += amount;
+        value = Mathf.Clamp(value, 0, _maxValue);
+        DrawHealthDar();
+    }
+
     private void PlayerIsDead()
     {
     gamepiayUT.SetActive(false);
@@ -34,6 +43,7 @@ public class PlayerHealth : MonoBehaviour
             GetComponent<PlayerController>().enabled = false;
             GetComponent<FireballCaster>().enabled = false;
             GetComponent<CameraRotation>().enabled = false;
+            animator.SetTrigger("deat");
     }
 
     private void DrawHealthDar()
