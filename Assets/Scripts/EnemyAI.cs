@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -9,6 +9,9 @@ public class EnemyAI : MonoBehaviour
     public float damage = 30;
     public PlayerController player;
     public List<Transform> patrolPoints;
+    public Animator animator;
+    public float attackDistance = 1;
+
     private NavMeshAgent _navMeshAgent;
     private bool _isPlayerNoticed;
     private PlayerHealth _playerHealth;
@@ -39,15 +42,27 @@ public class EnemyAI : MonoBehaviour
         {
             if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
             {
-                _playerHealth.DealDamage(damage * Time.deltaTime);
+                animator.SetTrigger("attack");
+                
+                //_playerHealth.DealDamage(damage * Time.deltaTime);
             }
         }
     }
 
-    void NoticePlayerUpdate()
+    public void AttacDamage()
     {
-        var direction = player.transform.position - transform.position;
+        if(!_isPlayerNoticed) return;
+        if (_navMeshAgent.remainingDistance > (_navMeshAgent.stoppingDistance + attackDistance )) return;
+        _playerHealth.DealDamage(damage);
+    }
+
+    private void NoticePlayerUpdate()
+    {
         _isPlayerNoticed = false;
+        if (_playerHealth.value <= 0) return;
+
+        var direction = player.transform.position - transform.position;
+
         if (Vector3.Angle(transform.forward, direction) < viewAngle)
         {
         RaycastHit hit;

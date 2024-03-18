@@ -19,6 +19,7 @@ public class PlayerHealth : MonoBehaviour
     DrawHealthDar();
  }
 
+
     public void DealDamage(float damage)
     {
         value -= damage;
